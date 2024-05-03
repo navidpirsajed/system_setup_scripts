@@ -2,7 +2,7 @@
 
 # script to get a linux system ready for development
 
-echo "starting" &&
+echo "\e[32mstarting" &&
     echo "checking if script is running as root" &&
     if [ "$EUID" -ne 0 ]; then
         echo "Please run as root"
@@ -76,7 +76,7 @@ echo "starting" &&
     fi &&
 
     # check if docker is installed
-    echo -e "\e[32mChecking if docker is installed" &&
+    echo -e "Checking if docker is installed" &&
     if [ -x "$(command -v docker)" ]; then
         echo "docker is installed"
     else
