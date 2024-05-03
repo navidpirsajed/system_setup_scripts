@@ -48,6 +48,7 @@ echo "\e[32mstarting" &&
         python3-pip \
         zsh \
         ufw \
+        gpg \
         build-essential &&
 
     # change default shell to zsh
@@ -115,7 +116,22 @@ echo "\e[32mstarting" &&
     systemctl restart sshd &&
     echo "ssh setup complete" &&
 
+    #     sudo apt-get install wget gpg
+    # wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    # sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    # echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" |sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+    # rm -f packages.microsoft.gpg
+    echo "installing vscode" &&
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg &&
+    install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg &&
+    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list >/dev/null &&
+    rm -f packages.microsoft.gpg &&
+    apt update &&
+    apt install -y code &&
+    echo "vscode installed" &&
+
     # display info
+    echo "setup complete" &&
     echo "Server port: $ssh_port" &&
     echo "Server public key: /root/.ssh/id_rsa.pub" &&
     echo "
